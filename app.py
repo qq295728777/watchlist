@@ -13,3 +13,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(app.root_path, 'da
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+
+
+class User(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(20))
+
+class Movie(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	title = db.Column(db.String(60))
+	year = db.Column(db.String(4))
+
