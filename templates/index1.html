@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>{{name}}'s favor'</title>
+	<title>{{user.name}}'s favor'</title>
 	<link rel='icon' href="{{url_for('static', filename='hh.gif')}}">
-	<link rel='stylesheet' href="{{ url_for('static', filename='style.css') }}"
+	<link rel='stylesheet' href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 	<!-- <img src={{url_for('static', filename='foo.jpg')}}> -->
 	<h2>
 		<img alt='Avatar' class='avatar' src="{{ url_for('static', filename='images/avatar.png') }}">
-		{{ name }}'s Watchlist
+		{{ user.name }}'s Watchlist
 	</h2>
 	<p>{{movies|length}}Titles</p>
 	<ul class='movie-list'>
