@@ -1,8 +1,11 @@
+
 import os
 import sys
+
+import click
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-import click
+
 
 WIN = sys.platform.startswith('win')
 if WIN:
@@ -10,11 +13,9 @@ if WIN:
 else:
     prefix = 'sqlite:///'
 
+
 app = Flask(__name__)
-
-
-app.config['SQLALCHEMY_DATABASE_URI'] = prefix + \
-    os.path.join(app.root_path, 'data.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(app.root_path, 'data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -23,6 +24,7 @@ db = SQLAlchemy(app)
 @app.cli.command()
 @click.option('--drop', is_flag=True, help='Create after drop.')
 def initdb(drop):
+
     if drop:
         db.drop_all()
     db.create_all()
@@ -31,6 +33,7 @@ def initdb(drop):
 
 @app.cli.command()
 def forge():
+
     db.create_all()
 
     name = 'Grey Li'
@@ -42,13 +45,10 @@ def forge():
         {'title': 'Mahjong', 'year': '1996'},
         {'title': 'Swallowtail Butterfly', 'year': '1996'},
         {'title': 'King of Comedy', 'year': '1999'},
-        {'title': 'Swallowtail Butterfly', 'year': '1996'},
-        {'title': 'King of Comedy', 'year': '1999'},
         {'title': 'Devils on the Doorstep', 'year': '1999'},
         {'title': 'WALL-E', 'year': '2008'},
         {'title': 'The Pork of Music', 'year': '2012'},
     ]
-
 
     user = User(name=name)
     db.session.add(user)
@@ -71,8 +71,18 @@ class Movie(db.Model):
     year = db.Column(db.String(4))
 
 
+@app.context_processor
+def inject_user():
+    user = User.query.first()
+    return dict(user=user)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404_1.html'), 404
+
+
 @app.route('/')
 def index():
-    user = User.query.first()
     movies = Movie.query.all()
-    return render_template('index1.html', user=user, movies=movies)
+    return render_template('base.html', movies=movies)
