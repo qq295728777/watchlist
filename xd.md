@@ -3,3 +3,5 @@
 2.delete方法的method请求只能是"POST",这是出于安全的考虑
 
 3.增加,编辑,删除条目都要先有一个movie实例,而改名和登录需要在user实例上做文章
+
+4.    username:sunf    password:123
